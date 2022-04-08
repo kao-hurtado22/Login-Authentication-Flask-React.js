@@ -9,7 +9,7 @@ class User(db.Model):
     is_active = db.Column(db.Boolean(), unique=False, nullable=False)
 
     def __repr__(self):
-        return f'<User {self.email}>'
+        return '<User %r>' % self.email
 
     def serialize(self):
         return {
@@ -17,3 +17,13 @@ class User(db.Model):
             "email": self.email,
             # do not serialize the password, its a security breach
         }
+    def save(self):
+        db.session.add(self)
+        db.session.commit() 
+
+    def update(self):
+        db.sesion.commit()
+
+    def delete(self):    
+        db.session.delete(self)
+        db.sesion.commit()
