@@ -8,14 +8,29 @@ from flask_jwt_extended import JWTManager, create_access_token,jwt_required, get
 
 api = Blueprint('api', __name__)
 
+@api.route('/User', methods=['GET'])
+def get_users():
+    all_users = Users.query.all()
+    all_users = list(map(lambda x: x.serialize(), all_users))
 
-@api.route('/User', methods=['POST', 'GET'])
-def users():
+    response_body = {
+        "Mensaje": all_users
+    }
+
+    return jsonify(response_body), 200 
+
+@api.route('/User', methods=['POST'])
+def post_users():
 
     if request.method == 'POST':
 
         email = request.json.get('email')
         password = request.json.get('password')
+
+        if not email: 
+            return jsonify({ "Error": "El email sera requerido!"}), 400
+        if not password: 
+            return jsonify({ "Error": "La password sera requerida!"}), 400
 
         response_body = {"Error": "El usuario ya existe!"}
         return jsonify(response_body), 200
@@ -27,8 +42,6 @@ def users():
 
         return jsonify(user.serialize()), 201
 
-        if not email: return jsonify({ "Error": "El email sera requerido!"}), 400
-        if not password: return jsonify({ "Error": "La password sera requerida!"}), 400
 
     return jsonify("exito")
 

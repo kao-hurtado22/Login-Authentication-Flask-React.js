@@ -64,7 +64,7 @@ export const Login = () => {
                                         />
                                         <label className="login-field-icon fui-lock" htmlFor="login-pass" />
                                     </div>
-                                    <a id="btn1" className="btn btn-primary btn-large btn-block" href="#">
+                                    <a id="btn1" className="btn btn-primary btn-large btn-block" href="/home">
                                         Iniciar Sesión
                                     </a>
                                     <a className="login-link" href="#">
