@@ -11,6 +11,8 @@ from api.models import db
 from api.routes import api
 from api.admin import setup_admin
 from api.commands import setup_commands
+from flask_jwt_extended import JWTManager, get_jwt_identity, jwt_required, create_access_token
+from werkzeug.security import generate_password_hash, check_password_hash 
 
 #from models import Person
 

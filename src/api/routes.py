@@ -43,13 +43,9 @@ def login():
     if not password: return jsonify({ "Error": "La password sera requerida!"}), 400
 
     user = User.query.filter_by(email=email).first()
-
+        
     if not user: return jsonify({"Error": "email/password es incorrecto!"}), 401
-    """ if not check_password_hash(user.password, password): """ 
-        
-        
-return jsonify({"Error": "email/password es incorrecto!"})
-
+    if not check_password_hash(user.password, password): return jsonify({"Error": "correo/password es incorrecto!"}), 401
 
     access_token = create_access_token(identity=email)
 
