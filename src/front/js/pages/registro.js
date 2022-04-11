@@ -44,6 +44,18 @@ export const Registro = () => {
                 <h1 className="app-title1">Registro</h1>
                 <div className="control-group">
                     <input
+                        type="username"
+                        placeholder="Username"
+                        id="login-input"
+                        className="form-control"
+                        name="username"
+                        onChange={handleChange}
+                        value={registro.email}
+                    />
+                </div>
+                {!validation && <p className="text-danger text-center">Agregue el username</p>}
+                <div className="control-group">
+                    <input
                         type="email"
                         placeholder="Email"
                         id="login-input"

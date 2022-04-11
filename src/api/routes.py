@@ -24,7 +24,7 @@ def handle_hello():
 @api.route('/registro', methods=['POST']) 
 def add_user():
     request_body = request.get_json()
-    name = request_body["name"]
+    username = request_body["username"]
     email = request_body["email"] 
     password = request_body["password"]
    
@@ -33,7 +33,7 @@ def add_user():
     if user:
         return jsonify({"msg":"Usuario ya existe"}), 444
     else:
-        new_user = User(name=name,email=email,password=password,is_active=True)
+        new_user = Username(username=username,email=email,password=password,is_active=True)
         db.session.add(new_user)
         db.session.commit()
         print(new_user)
@@ -42,8 +42,8 @@ def add_user():
 #route con POST LOGIN
 # Create a route to authenticate your users and return JWTs. The
 # create_access_token() function is used to actually generate the JWT.
-@api.route("/token", methods=["POST"])
-def create_token():
+@api.route("/Login", methods=["POST"])
+def create_login():
     email = request.json.get("email", None)
     password = request.json.get("password", None)
     if email != "test" or password != "test":

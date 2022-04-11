@@ -16,8 +16,9 @@ body {
 }
 .login-screen {
   position: relative;
-  top: 170px;
-  width: 350px;
+  right: 70px;
+  top: 100px;
+  width: 500px;
   height: 510px;
   padding: 10px;
   border-radius: 35px;
@@ -43,7 +44,7 @@ body {
 .app-title {
   font-weight: bold;
   position: relative;
-  top: 40px;
+  bottom: 20px;
   text-align: center;
   color: rgb(255, 255, 255);
 }
@@ -91,6 +92,7 @@ input:focus {
     inset 0 0 0.75em 0.25em var(--glow-color);
   text-shadow: 0 0 0.5em var(--glow-color);
   position: relative;
+  left: 145px;
   top: 25px;
   transition: all 0.3s;
 }
@@ -154,6 +156,7 @@ a.login-link {
   color: white;
   font-size: 14px;
   position: relative;
+  left: 148px;
   top: 100px;
 }
 #btn::after {
