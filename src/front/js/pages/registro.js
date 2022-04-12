@@ -5,7 +5,7 @@ import { Context } from "../store/appContext";
 export const Registro = () => {
     const { store, actions } = useContext(Context);
     const [registro, setRegistro] = useState({
-        name: "",
+        username: "",
         email: "",
         password: "",
     });
@@ -19,7 +19,7 @@ export const Registro = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         if (
-            registro.name !== "" &&
+            registro.username !== "" &&
             registro.email !== "" &&
             registro.password !== ""
         ) {
@@ -27,7 +27,7 @@ export const Registro = () => {
             console.log(registro);
             actions.setRegistro(registro);
             //history.push("/login");
-            setRegistro({ name: "", email: "", password: "" });
+            setRegistro({ username: "", email: "", password: "" });
             setValidation(true);
 
         } else
@@ -50,7 +50,7 @@ export const Registro = () => {
                         className="form-control"
                         name="username"
                         onChange={handleChange}
-                        value={registro.email}
+                        value={registro.username}
                     />
                 </div>
                 {!validation && <p className="text-danger text-center">Agregue el username</p>}

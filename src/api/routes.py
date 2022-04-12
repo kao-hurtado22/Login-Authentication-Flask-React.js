@@ -3,62 +3,78 @@ This module takes care of starting the API Server, Loading the DB and Adding the
 """
 from flask import Flask, request, jsonify, url_for, Blueprint
 from api.models import db, User
-from api.utils import generate_sitemap, APIException
-from flask_jwt_extended import create_access_token
-from flask_jwt_extended import get_jwt_identity
-from flask_jwt_extended import jwt_required
+from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required
 
 api = Blueprint('api', __name__)
 
+@api.route('/User', methods=['GET','POST'])
+def users():
 
-@api.route('/hello', methods=['POST', 'GET'])
-def handle_hello():
+        if request.method == 'POST':
+       
+            username = request.json.get("username")
+            email = request.json.get("email")
+            password = request.json.get("password")
 
-    response_body = {
-        "message": "Hello! I'm a message that came from the backend, check the network tab on the google inspector and you will see the GET request"
-    }
+            if not user: return jsonify({"Error": "El usuario ya existe!"}), 400
 
-    return jsonify(response_body), 200  
+            user = User()
+            user.username = username
+            user.email = email
+            user.password = password
+            user.save()  
 
-#Este funciona perfecto con el cliente (postman) y (app-front)
-@api.route('/registro', methods=['POST']) 
-def add_user():
-    request_body = request.get_json()
-    username = request_body["username"]
-    email = request_body["email"] 
-    password = request_body["password"]
-   
+            return jsonify(user.serialize()), 201
+
+            if not username: return jsonify({ "Error": "El username sera requerido!"}), 400
+            if not email: return jsonify({ "Error": "El email sera requerido!"}), 400
+            if not password: return jsonify({ "Error": "La contraseña sera requerida!"}), 400
+
+        return jsonify("exito")
+
+@api.route('/Registro', methods=['GET','POST'])
+def registro():
+        if request.method == 'POST':
+       
+            username = request.form['username']
+            email = request.json.get("email")
+            password = request.json.get("password")
+
+            if not user: return jsonify({"Error": "El usuario ya existe!"}), 400
+
+            user = User()
+            user.username = username
+            user.email = email
+            user.password = password
+            user.save()  
+
+            return jsonify(user.serialize()), 201
+
+            if not username: return jsonify({ "Error": "El username sera requerido!"}), 400
+            if not email: return jsonify({ "Error": "El email sera requerido!"}), 400
+            if not password: return jsonify({ "Error": "La contraseña sera requerida!"}), 400
+
+        return jsonify("exito")
+
+
+@api.route('/Login', methods=['GET','POST'])
+def login():
+
+    email = request.json.get('email'),
+    password = request.json.get('password'),
+
+    if not email: return jsonify({ "Error": "El email sera requerido!"}), 400
+    if not contraseña: return jsonify({ "Error": "La contraseña sera requerida!"}), 400
 
     user = User.query.filter_by(email=email).first()
-    if user:
-        return jsonify({"msg":"Usuario ya existe"}), 444
-    else:
-        new_user = Username(username=username,email=email,password=password,is_active=True)
-        db.session.add(new_user)
-        db.session.commit()
-        print(new_user)
-        return jsonify({"msg":"Usuario registrado exitosamente"}), 200
-   
-#route con POST LOGIN
-# Create a route to authenticate your users and return JWTs. The
-# create_access_token() function is used to actually generate the JWT.
-@api.route("/Login", methods=["POST"])
-def create_login():
-    email = request.json.get("email", None)
-    password = request.json.get("password", None)
-    if email != "test" or password != "test":
-        return jsonify({"msg": "Bad username or password"}), 401
 
-    access_token = create_access_token(identity=email)
-    return jsonify(access_token=access_token) 
+    if not user: return jsonify({"Error": "email/password es incorrecto!"}), 401
+    if not check_password_hash(user.password, password): return jsonify({"Error": "email/password es incorrecto!"}), 401
 
+    access_token = create_access_token(identity=user.id, expire=expires)
 
-#@jwt_required()
-@api.route("/private", methods=["GET"])
-@jwt_required()
-def get_private():
-
-    email = get_jwt_identity()
-    dictionary = {"message": "Bienvenid@, " + email}
-   
-    return jsonify(dictionary) 
+    data = {
+        "access_token": access_token,
+        "user": user.serialize()
+    }
+    return jsonify(data), 200
